@@ -8,6 +8,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 <style>
 /* ── Reset & Tokens ─────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -1573,12 +1576,562 @@ h2.section-title em {
   .gallery-item:first-child { grid-column: span 1; }
   .brands-row { gap: 32px; }
 }
+
+/* ── 3D Hero Canvas ─────────────────────────────────────────── */
+#heroThreeCanvas {
+  position: absolute;
+  top: 0; right: 0;
+  width: 55%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+/* ── Floating Particles ─────────────────────────────────────── */
+#particleCanvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+/* ── 3D Tilt Cards ──────────────────────────────────────────── */
+.tilt-card {
+  transform-style: preserve-3d;
+  transform: perspective(1000px) rotateX(0deg) rotateY(0deg);
+  transition: transform 0.1s ease;
+  will-change: transform;
+}
+
+.tilt-card .tilt-shine {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(circle at var(--shine-x, 50%) var(--shine-y, 50%),
+    rgba(212,168,67,0.12) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.tilt-card:hover .tilt-shine { opacity: 1; }
+
+/* ── Scroll 3D Reveal ───────────────────────────────────────── */
+.reveal-3d {
+  opacity: 0;
+  transform: perspective(800px) rotateX(12deg) translateY(40px);
+  transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-3d.visible {
+  opacity: 1;
+  transform: perspective(800px) rotateX(0deg) translateY(0);
+}
+
+/* ── Magnetic Buttons ───────────────────────────────────────── */
+.magnetic-btn {
+  display: inline-block;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+
+/* ── Water Ripple CTA ───────────────────────────────────────── */
+.ripple-section {
+  position: relative;
+  overflow: hidden;
+}
+
+#rippleCanvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.4;
+}
+
+.ripple-section > * { position: relative; z-index: 1; }
+
+/* ── Number counter animate ─────────────────────────────────── */
+.count-up { display: inline-block; }
+
+/* ── Typewriter cursor ──────────────────────────────────────── */
+.typewriter-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background: var(--primary);
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  animation: blink 0.9s step-end infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* ── Glitch text effect ─────────────────────────────────────── */
+.glitch {
+  position: relative;
+}
+
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+.glitch::before {
+  color: var(--teal);
+  clip-path: polygon(0 0, 100% 0, 100% 35%, 0 35%);
+  transform: translateX(-2px);
+  animation: glitch1 4s infinite;
+}
+
+.glitch::after {
+  color: var(--primary);
+  clip-path: polygon(0 65%, 100% 65%, 100% 100%, 0 100%);
+  transform: translateX(2px);
+  animation: glitch2 4s infinite;
+}
+
+@keyframes glitch1 {
+  0%, 90%, 100% { transform: translateX(-2px); opacity: 0; }
+  92% { transform: translateX(3px); opacity: 0.6; }
+  94% { transform: translateX(-1px); opacity: 0.3; }
+  96% { transform: translateX(0); opacity: 0; }
+}
+
+@keyframes glitch2 {
+  0%, 90%, 100% { transform: translateX(2px); opacity: 0; }
+  93% { transform: translateX(-3px); opacity: 0.5; }
+  95% { transform: translateX(1px); opacity: 0.2; }
+  97% { transform: translateX(0); opacity: 0; }
+}
+
+/* ── 3D Orbiting badge ──────────────────────────────────────── */
+.hero-3d-badge {
+  position: absolute;
+  bottom: 40px;
+  right: 48px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  animation: float3d 4s ease-in-out infinite;
+  transform-style: preserve-3d;
+}
+
+@keyframes float3d {
+  0%, 100% { transform: translateY(0) rotateX(0deg); }
+  50% { transform: translateY(-12px) rotateX(4deg); }
+}
+
+.h3d-ring {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(212,168,67,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(7,17,31,0.7);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 0 30px rgba(212,168,67,0.1), inset 0 0 20px rgba(42,143,168,0.05);
+}
+
+.h3d-ring svg {
+  width: 36px;
+  height: 36px;
+  stroke: var(--primary);
+  fill: none;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.h3d-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--primary);
+  text-align: center;
+  line-height: 1.4;
+}
+
+/* ── Chatbot ────────────────────────────────────────────────── */
+.chat-launcher {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+.chat-bubble-hint {
+  background: var(--surface2);
+  border: 1px solid rgba(212,168,67,0.25);
+  border-radius: 12px 12px 2px 12px;
+  padding: 10px 16px;
+  font-size: 13px;
+  color: var(--text);
+  white-space: nowrap;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  animation: hintPop 0.4s cubic-bezier(0.16,1,0.3,1) both;
+  cursor: pointer;
+}
+
+@keyframes hintPop {
+  from { opacity: 0; transform: scale(0.85) translateY(8px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.chat-btn {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--primary);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 24px rgba(212,168,67,0.4), 0 0 0 0 rgba(212,168,67,0.3);
+  animation: chatPulse 2.5s ease infinite;
+  transition: transform 0.2s ease, background 0.2s ease;
+  position: relative;
+}
+
+@keyframes chatPulse {
+  0%   { box-shadow: 0 4px 24px rgba(212,168,67,0.4), 0 0 0 0 rgba(212,168,67,0.3); }
+  50%  { box-shadow: 0 4px 24px rgba(212,168,67,0.4), 0 0 0 12px rgba(212,168,67,0); }
+  100% { box-shadow: 0 4px 24px rgba(212,168,67,0.4), 0 0 0 0 rgba(212,168,67,0); }
+}
+
+.chat-btn:hover {
+  background: var(--accent);
+  transform: scale(1.08);
+}
+
+.chat-btn svg {
+  width: 26px;
+  height: 26px;
+  stroke: var(--bg);
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: opacity 0.2s ease;
+}
+
+.chat-btn .icon-chat { opacity: 1; position: absolute; }
+.chat-btn .icon-close { opacity: 0; position: absolute; }
+.chat-btn.open .icon-chat { opacity: 0; }
+.chat-btn.open .icon-close { opacity: 1; }
+
+.chat-unread {
+  position: absolute;
+  top: -3px;
+  right: -3px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #EF4444;
+  border: 2px solid var(--bg);
+  font-size: 10px;
+  font-weight: 700;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Chat window */
+.chat-window {
+  position: fixed;
+  bottom: 104px;
+  right: 28px;
+  z-index: 998;
+  width: 360px;
+  max-height: 560px;
+  background: var(--surface);
+  border: 1px solid rgba(212,168,67,0.15);
+  border-radius: 20px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.6);
+  transform: scale(0.88) translateY(20px);
+  transform-origin: bottom right;
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.35s cubic-bezier(0.16,1,0.3,1), opacity 0.3s ease;
+}
+
+.chat-window.open {
+  transform: scale(1) translateY(0);
+  opacity: 1;
+  pointer-events: all;
+}
+
+.chat-header {
+  background: linear-gradient(135deg, #0C1B2E 0%, #101F33 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 18px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.chat-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--gold-dim);
+  border: 1.5px solid rgba(212,168,67,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.chat-avatar svg {
+  width: 20px;
+  height: 20px;
+  stroke: var(--primary);
+  fill: none;
+  stroke-width: 2;
+}
+
+.chat-online {
+  position: absolute;
+  bottom: 1px;
+  right: 1px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #22C55E;
+  border: 2px solid var(--surface);
+}
+
+.chat-header-info {}
+
+.chat-header-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+
+.chat-header-status {
+  font-size: 11px;
+  color: #22C55E;
+  font-weight: 500;
+}
+
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+.chat-messages::-webkit-scrollbar { width: 4px; }
+.chat-messages::-webkit-scrollbar-track { background: transparent; }
+.chat-messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+.chat-msg {
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+  animation: msgIn 0.3s cubic-bezier(0.16,1,0.3,1) both;
+}
+
+@keyframes msgIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.chat-msg.user { flex-direction: row-reverse; }
+
+.msg-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--gold-dim);
+  border: 1px solid rgba(212,168,67,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 11px;
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.msg-bubble {
+  max-width: 240px;
+  padding: 10px 14px;
+  border-radius: 16px;
+  font-size: 13px;
+  line-height: 1.55;
+  font-weight: 400;
+}
+
+.chat-msg.bot .msg-bubble {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-bottom-left-radius: 4px;
+}
+
+.chat-msg.user .msg-bubble {
+  background: var(--primary);
+  color: var(--bg);
+  border-bottom-right-radius: 4px;
+  font-weight: 500;
+}
+
+/* Typing indicator */
+.chat-typing .msg-bubble {
+  padding: 12px 16px;
+}
+
+.typing-dots {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.typing-dots span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--muted);
+  animation: typingDot 1.2s ease infinite;
+}
+
+.typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+.typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes typingDot {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+  30% { transform: translateY(-4px); opacity: 1; }
+}
+
+/* Quick replies */
+.chat-quick-replies {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  padding: 4px 16px 8px;
+}
+
+.qr-btn {
+  padding: 7px 13px;
+  background: transparent;
+  border: 1px solid rgba(212,168,67,0.3);
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--primary);
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  transition: background 0.2s ease, border-color 0.2s ease;
+  white-space: nowrap;
+}
+
+.qr-btn:hover {
+  background: var(--gold-dim);
+  border-color: var(--primary);
+}
+
+/* Chat input */
+.chat-input-row {
+  border-top: 1px solid var(--border);
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.chat-input {
+  flex: 1;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  padding: 10px 16px;
+  font-size: 13px;
+  font-family: 'Inter', sans-serif;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.chat-input:focus { border-color: rgba(212,168,67,0.4); }
+.chat-input::placeholder { color: var(--muted); }
+
+.chat-send {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--primary);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.chat-send:hover { background: var(--accent); transform: scale(1.08); }
+
+.chat-send svg {
+  width: 16px;
+  height: 16px;
+  stroke: var(--bg);
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+@media (max-width: 480px) {
+  .chat-window { width: calc(100vw - 32px); right: 16px; bottom: 96px; }
+  .chat-launcher { right: 16px; bottom: 16px; }
+  #heroThreeCanvas { display: none; }
+}
 </style>
 </head>
 <body>
 
 <!-- ── Mesh Canvas ── -->
 <canvas id="meshCanvas" class="layer" aria-hidden="true"></canvas>
+
+<!-- ── Particle Canvas ── -->
+<canvas id="particleCanvas" aria-hidden="true"></canvas>
 
 <!-- ── Nav ── -->
 <nav class="nav layer">
@@ -1616,6 +2169,16 @@ h2.section-title em {
 <!-- ── Hero ── -->
 <section class="hero layer">
   <div class="hero-bg-placeholder" aria-hidden="true"></div>
+  <canvas id="heroThreeCanvas" aria-hidden="true"></canvas>
+
+  <!-- Floating 3D badge -->
+  <div class="hero-3d-badge layer">
+    <div class="h3d-ring">
+      <svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+    </div>
+    <span class="h3d-label">Licensed<br>Since 1986</span>
+  </div>
+
   <!--
     FLOW / VEO 3 VIDEO PROMPT:
     "Cinematic close-up of professional plumber's hands installing copper pipe fittings
@@ -1631,7 +2194,7 @@ h2.section-title em {
         Available for Emergency Calls
       </div>
       <h1 class="hero-headline">
-        Expert plumbing<br>
+        <span class="glitch" data-text="Expert plumbing">Expert plumbing</span><br>
         for the <em>South Carolina</em><br>
         coast
       </h1>
@@ -1677,13 +2240,14 @@ h2.section-title em {
 </section>
 
 <!-- ── Emergency Bar ── -->
-<div class="emergency-bar layer">
+<div class="emergency-bar layer ripple-section">
+<canvas id="rippleCanvas" aria-hidden="true"></canvas>
   <span class="eb-text">24/7 Emergency Plumbing</span>
   <div class="eb-sep"></div>
   <a href="tel:8548540049" class="eb-phone">(854) 854-0049</a>
   <div class="eb-sep"></div>
   <span class="eb-text">Call Now — No Extra Charge for Evenings</span>
-</div>
+</div><!-- /ripple-section -->
 
 <!-- ── Trust Bar ── -->
 <div class="trust-bar layer">
@@ -1731,7 +2295,8 @@ h2.section-title em {
 
   <div class="services-grid" id="servicesGrid">
 
-    <div class="service-card fade-up">
+    <div class="service-card fade-up tilt-card">
+      <div class="tilt-shine"></div>
       <svg class="sc-icon" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10"/><path d="M12 8v4l3 3"/><path d="M18 2l4 4-4 4"/><path d="M22 2l-4 4"/></svg>
       <h3 class="sc-title">Emergency Repairs</h3>
       <p class="sc-desc">Burst pipes, leaks, backups — we respond fast. No extra charge for evening calls. When water can't wait, neither do we.</p>
@@ -2025,7 +2590,7 @@ h2.section-title em {
   </div>
 
   <div class="testimonials-grid">
-    <div class="testimonial-card fade-up">
+    <div class="testimonial-card fade-up tilt-card reveal-3d">
       <div class="tc-stars">
         <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
         <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
@@ -2043,7 +2608,7 @@ h2.section-title em {
       </div>
     </div>
 
-    <div class="testimonial-card fade-up">
+    <div class="testimonial-card fade-up tilt-card reveal-3d">
       <div class="tc-stars">
         <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
         <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
@@ -2061,7 +2626,7 @@ h2.section-title em {
       </div>
     </div>
 
-    <div class="testimonial-card fade-up">
+    <div class="testimonial-card fade-up tilt-card reveal-3d">
       <div class="tc-stars">
         <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
         <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
@@ -2306,6 +2871,42 @@ h2.section-title em {
   </div>
 </footer>
 
+<!-- ── Chatbot ── -->
+<div class="chat-launcher" id="chatLauncher">
+  <div class="chat-bubble-hint" id="chatHint" onclick="openChat()">
+    👋 Need a plumber? Ask me anything!
+  </div>
+  <button class="chat-btn" id="chatBtn" onclick="toggleChat()" aria-label="Open chat">
+    <span class="chat-unread" id="chatUnread">1</span>
+    <svg class="icon-chat" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+    <svg class="icon-close" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </button>
+</div>
+
+<div class="chat-window" id="chatWindow">
+  <div class="chat-header">
+    <div class="chat-avatar">
+      <svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+      <span class="chat-online"></span>
+    </div>
+    <div class="chat-header-info">
+      <p class="chat-header-name">Beach House Plumbing</p>
+      <p class="chat-header-status">● Online — Usually replies instantly</p>
+    </div>
+  </div>
+
+  <div class="chat-messages" id="chatMessages"></div>
+
+  <div class="chat-quick-replies" id="chatQuickReplies"></div>
+
+  <div class="chat-input-row">
+    <input class="chat-input" id="chatInput" type="text" placeholder="Type a message..." autocomplete="off" />
+    <button class="chat-send" onclick="chatSend()" aria-label="Send">
+      <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+    </button>
+  </div>
+</div>
+
 <!-- ── Scripts ── -->
 <script>
 /* ── Mesh Gradient Background ── */
@@ -2437,6 +3038,621 @@ document.querySelectorAll('a[href^="#"]').forEach(function (a) {
     }
   });
 });
+
+/* ═══════════════════════════════════════════════════════════════
+   THREE.JS HERO SCENE — Animated 3D pipe geometry
+   ═══════════════════════════════════════════════════════════════ */
+(function () {
+  var canvas = document.getElementById('heroThreeCanvas');
+  if (!canvas || typeof THREE === 'undefined') return;
+
+  var W = canvas.offsetWidth, H = canvas.offsetHeight;
+  var renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(W, H);
+
+  var scene = new THREE.Scene();
+  var camera = new THREE.PerspectiveCamera(45, W / H, 0.1, 100);
+  camera.position.set(0, 0, 6);
+
+  // Lighting
+  var ambLight = new THREE.AmbientLight(0x1a3a5c, 1.2);
+  scene.add(ambLight);
+  var dirLight = new THREE.DirectionalLight(0xD4A843, 1.8);
+  dirLight.position.set(3, 4, 3);
+  scene.add(dirLight);
+  var pointLight = new THREE.PointLight(0x2A8FA8, 2, 12);
+  pointLight.position.set(-2, 2, 2);
+  scene.add(pointLight);
+
+  // Materials
+  var goldMat = new THREE.MeshStandardMaterial({
+    color: 0xC9934A, metalness: 0.85, roughness: 0.2,
+    envMapIntensity: 1.0,
+  });
+  var darkMat = new THREE.MeshStandardMaterial({
+    color: 0x0F2A42, metalness: 0.6, roughness: 0.5,
+  });
+  var tealMat = new THREE.MeshStandardMaterial({
+    color: 0x2A8FA8, metalness: 0.7, roughness: 0.3,
+  });
+
+  var group = new THREE.Group();
+
+  // Central pipe (vertical)
+  var pipe1 = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.18, 3.2, 16), goldMat);
+  pipe1.position.set(0, 0, 0);
+  group.add(pipe1);
+
+  // Horizontal pipe
+  var pipe2 = new THREE.Mesh(new THREE.CylinderGeometry(0.14, 0.14, 2.4, 16), darkMat);
+  pipe2.rotation.z = Math.PI / 2;
+  pipe2.position.set(0, 0.5, 0);
+  group.add(pipe2);
+
+  // Tee connectors
+  [0.5, -0.5].forEach(function (y) {
+    var conn = new THREE.Mesh(new THREE.TorusGeometry(0.22, 0.07, 12, 24), tealMat);
+    conn.position.set(0, y, 0);
+    group.add(conn);
+  });
+
+  // Elbow (torus quarter)
+  var elbow = new THREE.Mesh(new THREE.TorusGeometry(0.4, 0.1, 10, 20, Math.PI / 2), goldMat);
+  elbow.position.set(0.8, 0.5, 0);
+  elbow.rotation.z = -Math.PI / 4;
+  group.add(elbow);
+
+  // Small sphere caps
+  [-1.6, 1.6].forEach(function (y) {
+    var cap = new THREE.Mesh(new THREE.SphereGeometry(0.22, 16, 16), goldMat);
+    cap.position.set(0, y, 0);
+    group.add(cap);
+  });
+
+  // Wrench-like side element
+  var wrench = new THREE.Mesh(new THREE.BoxGeometry(0.12, 1.6, 0.12), darkMat);
+  wrench.position.set(-1.1, 0, 0);
+  wrench.rotation.z = 0.3;
+  group.add(wrench);
+
+  // Small floating bolts
+  for (var i = 0; i < 6; i++) {
+    var bolt = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 0.18, 8), goldMat);
+    bolt.position.set(
+      (Math.random() - 0.5) * 3,
+      (Math.random() - 0.5) * 2.5,
+      (Math.random() - 0.5) * 1.5
+    );
+    bolt.rotation.x = Math.random() * Math.PI;
+    group.add(bolt);
+  }
+
+  group.position.set(0.5, 0, 0);
+  scene.add(group);
+
+  // Resize
+  window.addEventListener('resize', function () {
+    W = canvas.offsetWidth;
+    H = canvas.offsetHeight;
+    camera.aspect = W / H;
+    camera.updateProjectionMatrix();
+    renderer.setSize(W, H);
+  });
+
+  // Mouse parallax
+  var mx = 0, my = 0;
+  document.addEventListener('mousemove', function (e) {
+    mx = (e.clientX / window.innerWidth - 0.5) * 0.5;
+    my = (e.clientY / window.innerHeight - 0.5) * 0.3;
+  });
+
+  var clock = new THREE.Clock();
+
+  function animate() {
+    requestAnimationFrame(animate);
+    var t = clock.getElapsedTime();
+    group.rotation.y = t * 0.18 + mx * 0.6;
+    group.rotation.x = Math.sin(t * 0.3) * 0.12 + my * 0.4;
+    group.position.y = Math.sin(t * 0.5) * 0.15;
+    pointLight.position.x = Math.sin(t * 0.7) * 3;
+    pointLight.position.y = Math.cos(t * 0.5) * 2;
+    renderer.render(scene, camera);
+  }
+  animate();
+})();
+
+/* ═══════════════════════════════════════════════════════════════
+   FLOATING PARTICLES — Water-drop style ambient particles
+   ═══════════════════════════════════════════════════════════════ */
+(function () {
+  var canvas = document.getElementById('particleCanvas');
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+
+  function resize() {
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  var particles = [];
+  var COUNT = 55;
+
+  for (var i = 0; i < COUNT; i++) {
+    particles.push({
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      r: 1 + Math.random() * 3,
+      vx: (Math.random() - 0.5) * 0.3,
+      vy: -0.1 - Math.random() * 0.4,
+      alpha: 0.1 + Math.random() * 0.5,
+      color: Math.random() > 0.6 ? [212, 168, 67] : [42, 143, 168],
+      pulse: Math.random() * Math.PI * 2,
+    });
+  }
+
+  function drawParticles() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(function (p) {
+      p.pulse += 0.02;
+      p.x += p.vx;
+      p.y += p.vy;
+      if (p.y < -10) { p.y = canvas.height + 10; p.x = Math.random() * canvas.width; }
+      if (p.x < -10) p.x = canvas.width + 10;
+      if (p.x > canvas.width + 10) p.x = -10;
+
+      var a = p.alpha * (0.7 + Math.sin(p.pulse) * 0.3);
+      var g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 3);
+      g.addColorStop(0, 'rgba(' + p.color[0] + ',' + p.color[1] + ',' + p.color[2] + ',' + a + ')');
+      g.addColorStop(1, 'rgba(' + p.color[0] + ',' + p.color[1] + ',' + p.color[2] + ',0)');
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r * 3, 0, Math.PI * 2);
+      ctx.fillStyle = g;
+      ctx.fill();
+
+      // Inner core
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r * 0.5, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(' + p.color[0] + ',' + p.color[1] + ',' + p.color[2] + ',' + (a * 1.5) + ')';
+      ctx.fill();
+    });
+    requestAnimationFrame(drawParticles);
+  }
+  drawParticles();
+})();
+
+/* ═══════════════════════════════════════════════════════════════
+   3D CARD TILT — Perspective tilt + shine on hover
+   ═══════════════════════════════════════════════════════════════ */
+(function () {
+  document.querySelectorAll('.tilt-card').forEach(function (card) {
+    var shine = card.querySelector('.tilt-shine');
+
+    card.addEventListener('mousemove', function (e) {
+      var rect = card.getBoundingClientRect();
+      var cx = rect.left + rect.width / 2;
+      var cy = rect.top + rect.height / 2;
+      var dx = (e.clientX - cx) / (rect.width / 2);
+      var dy = (e.clientY - cy) / (rect.height / 2);
+      var rx = dy * -9;
+      var ry = dx * 9;
+      card.style.transform = 'perspective(900px) rotateX(' + rx + 'deg) rotateY(' + ry + 'deg) scale3d(1.02,1.02,1.02)';
+      if (shine) {
+        var sx = ((e.clientX - rect.left) / rect.width) * 100;
+        var sy = ((e.clientY - rect.top) / rect.height) * 100;
+        card.style.setProperty('--shine-x', sx + '%');
+        card.style.setProperty('--shine-y', sy + '%');
+      }
+    });
+
+    card.addEventListener('mouseleave', function () {
+      card.style.transform = 'perspective(900px) rotateX(0deg) rotateY(0deg) scale3d(1,1,1)';
+    });
+  });
+})();
+
+/* ═══════════════════════════════════════════════════════════════
+   SCROLL 3D REVEAL — Elements rotate in from below on scroll
+   ═══════════════════════════════════════════════════════════════ */
+(function () {
+  var els = document.querySelectorAll('.reveal-3d');
+  var obs = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  els.forEach(function (el) { obs.observe(el); });
+})();
+
+/* ═══════════════════════════════════════════════════════════════
+   WATER RIPPLE — Canvas ripple on the emergency bar
+   ═══════════════════════════════════════════════════════════════ */
+(function () {
+  var canvas = document.getElementById('rippleCanvas');
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var ripples = [];
+
+  function resize() {
+    canvas.width  = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  // Auto-spawn ripples
+  setInterval(function () {
+    ripples.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      r: 0, maxR: 60 + Math.random() * 60,
+      alpha: 0.6,
+    });
+  }, 900);
+
+  function drawRipples() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ripples = ripples.filter(function (r) { return r.alpha > 0; });
+    ripples.forEach(function (r) {
+      r.r += 1.2;
+      r.alpha -= 0.008;
+      ctx.beginPath();
+      ctx.arc(r.x, r.y, r.r, 0, Math.PI * 2);
+      ctx.strokeStyle = 'rgba(212,168,67,' + Math.max(0, r.alpha) + ')';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+    });
+    requestAnimationFrame(drawRipples);
+  }
+  drawRipples();
+})();
+
+/* ═══════════════════════════════════════════════════════════════
+   MAGNETIC BUTTONS — Subtle cursor follow on CTAs
+   ═══════════════════════════════════════════════════════════════ */
+(function () {
+  document.querySelectorAll('.btn-primary, .btn-outline, .hero-emergency').forEach(function (btn) {
+    btn.addEventListener('mousemove', function (e) {
+      var rect = btn.getBoundingClientRect();
+      var dx = (e.clientX - (rect.left + rect.width / 2)) * 0.25;
+      var dy = (e.clientY - (rect.top + rect.height / 2)) * 0.25;
+      btn.style.transform = 'translate(' + dx + 'px, ' + dy + 'px)';
+    });
+    btn.addEventListener('mouseleave', function () {
+      btn.style.transform = 'translate(0,0)';
+    });
+  });
+})();
+
+/* ═══════════════════════════════════════════════════════════════
+   GSAP SCROLL ANIMATIONS — Stagger, parallax, section reveals
+   ═══════════════════════════════════════════════════════════════ */
+(function () {
+  if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Service cards stagger
+  gsap.from('.service-card', {
+    scrollTrigger: { trigger: '.services-grid', start: 'top 80%' },
+    y: 60, opacity: 0, rotateX: 15,
+    duration: 0.7, stagger: 0.1,
+    ease: 'power3.out',
+  });
+
+  // Stats counter
+  gsap.from('.hsc-num', {
+    scrollTrigger: { trigger: '.hero-stat-row', start: 'top 85%' },
+    textContent: 0,
+    duration: 1.5,
+    ease: 'power2.out',
+    snap: { textContent: 1 },
+  });
+
+  // Hero headline letter animation
+  gsap.from('.hero-headline', {
+    opacity: 0, y: 30, duration: 1, delay: 0.3, ease: 'power3.out',
+  });
+
+  gsap.from('.hero-badge', {
+    opacity: 0, scale: 0.8, duration: 0.6, delay: 0.1, ease: 'back.out(1.7)',
+  });
+
+  gsap.from('.hero-actions', {
+    opacity: 0, y: 20, duration: 0.8, delay: 0.7, ease: 'power3.out',
+  });
+
+  // Parallax on about image
+  gsap.to('.about-img-wrap', {
+    scrollTrigger: {
+      trigger: '.about-section',
+      start: 'top bottom',
+      end: 'bottom top',
+      scrub: 1,
+    },
+    y: -50,
+  });
+
+  // Footer brand parallax
+  gsap.from('.footer-brand', {
+    scrollTrigger: { trigger: '.footer', start: 'top 90%' },
+    opacity: 0, x: -30, duration: 0.8, ease: 'power2.out',
+  });
+
+  // Why points stagger
+  gsap.from('.why-point', {
+    scrollTrigger: { trigger: '.why-points', start: 'top 80%' },
+    opacity: 0, x: 30, duration: 0.6, stagger: 0.15, ease: 'power2.out',
+  });
+
+  // Timeline items
+  gsap.from('.at-item', {
+    scrollTrigger: { trigger: '.about-timeline', start: 'top 80%' },
+    opacity: 0, x: 20, duration: 0.5, stagger: 0.12, ease: 'power2.out',
+  });
+
+  // Brand names
+  gsap.from('.brand-name', {
+    scrollTrigger: { trigger: '.brands-inner', start: 'top 85%' },
+    opacity: 0, y: 20, duration: 0.5, stagger: 0.1, ease: 'power2.out',
+  });
+})();
+
+/* ═══════════════════════════════════════════════════════════════
+   TYPEWRITER — Hero subtext
+   ═══════════════════════════════════════════════════════════════ */
+(function () {
+  var el = document.querySelector('.hero-sub');
+  if (!el) return;
+  var full = el.textContent;
+  el.textContent = '';
+  var cursor = document.createElement('span');
+  cursor.className = 'typewriter-cursor';
+  el.appendChild(cursor);
+  var i = 0;
+  var timer = setInterval(function () {
+    if (i < full.length) {
+      el.insertBefore(document.createTextNode(full[i]), cursor);
+      i++;
+    } else {
+      clearInterval(timer);
+      setTimeout(function () { cursor.style.display = 'none'; }, 2000);
+    }
+  }, 18);
+})();
+
+/* ═══════════════════════════════════════════════════════════════
+   CHATBOT — Smart keyword-matching assistant
+   ═══════════════════════════════════════════════════════════════ */
+(function () {
+  var isOpen = false;
+  var hintDismissed = false;
+
+  // Auto-dismiss hint after 6s
+  setTimeout(function () {
+    var hint = document.getElementById('chatHint');
+    if (hint && !hintDismissed) {
+      hint.style.opacity = '0';
+      hint.style.transition = 'opacity 0.5s ease';
+      setTimeout(function () { hint.style.display = 'none'; }, 500);
+    }
+  }, 6000);
+
+  window.openChat = function () {
+    hintDismissed = true;
+    document.getElementById('chatHint').style.display = 'none';
+    if (!isOpen) toggleChat();
+  };
+
+  window.toggleChat = function () {
+    isOpen = !isOpen;
+    document.getElementById('chatWindow').classList.toggle('open', isOpen);
+    document.getElementById('chatBtn').classList.toggle('open', isOpen);
+    document.getElementById('chatUnread').style.display = isOpen ? 'none' : '';
+    if (isOpen && document.getElementById('chatMessages').children.length === 0) {
+      initChat();
+    }
+    if (isOpen) {
+      setTimeout(function () { document.getElementById('chatInput').focus(); }, 300);
+    }
+  };
+
+  var KB = [
+    {
+      keys: ['emergency', 'urgent', 'burst', 'leak', 'flood', 'overflow', 'broken', 'help', 'asap'],
+      reply: "🚨 <strong>For emergencies, call us immediately:</strong><br><a href='tel:8548540049' style='color:var(--primary);font-weight:700'>(854) 854-0049</a><br>We respond fast — no extra charge for evening calls.",
+      quick: ['Call now', 'Other services', 'Hours'],
+    },
+    {
+      keys: ['price', 'cost', 'much', 'charge', 'rate', 'fee', 'quote', 'estimate'],
+      reply: "We offer <strong>free quotes</strong> on all new work — no obligation. Pricing depends on the job scope, but we're always transparent upfront with no surprise charges. Want to request a quote?",
+      quick: ['Get a free quote', 'What services?', 'Call now'],
+    },
+    {
+      keys: ['service', 'do you', 'offer', 'fix', 'install', 'repair', 'work'],
+      reply: "We handle:<br>• Emergency repairs<br>• Water heater install & repair<br>• Drain cleaning & hydro-jetting<br>• Kitchen & bathroom plumbing<br>• Commercial plumbing<br>• Home inspections<br><br>All backed by a <strong>1-year labor warranty</strong>.",
+      quick: ['Water heater', 'Emergency', 'Get a quote'],
+    },
+    {
+      keys: ['water heater', 'heater', 'hot water', 'tankless'],
+      reply: "We install and repair <strong>tank and tankless water heaters</strong> — State, Rheem, Bradford White, and more. Free quotes on all installs. Want to book a visit?",
+      quick: ['Get a free quote', 'Call now', 'Other services'],
+    },
+    {
+      keys: ['drain', 'clog', 'slow', 'backup', 'blocked', 'sewer'],
+      reply: "We clear stubborn clogs with professional <strong>hydro-jetting and snaking</strong> — including main line blockages. Lasting results, not just a temporary fix.",
+      quick: ['Get a free quote', 'Emergency call', 'More services'],
+    },
+    {
+      keys: ['area', 'serve', 'location', 'where', 'myrtle', 'surfside', 'pawleys', 'carolina', 'sc', 'south'],
+      reply: "We serve the <strong>South Carolina coastal region</strong> including Myrtle Beach, Surfside Beach, Pawleys Island, Murrells Inlet, and surrounding communities. Call to confirm your area.",
+      quick: ['Call now', 'Get a quote'],
+    },
+    {
+      keys: ['hour', 'open', 'available', 'weekend', 'sunday', 'saturday', 'time', 'schedule'],
+      reply: "Our hours:<br>• <strong>Mon–Fri:</strong> 7AM – 6PM<br>• <strong>Saturday:</strong> 8AM – 3PM<br>• <strong>Sunday:</strong> By appointment<br>• <strong>Emergencies:</strong> 24/7 — Call anytime",
+      quick: ['Book an appointment', 'Emergency call'],
+    },
+    {
+      keys: ['warranty', 'guarantee', 'covered'],
+      reply: "All our labor comes with a <strong>1-year warranty</strong>. Parts and fixtures are covered by manufacturer warranties (varies by brand). We use American-made brands specifically because they stand behind their products.",
+      quick: ['What brands?', 'Get a quote'],
+    },
+    {
+      keys: ['brand', 'american', 'kohler', 'state', 'rheem', 'bradford'],
+      reply: "We're committed to <strong>American-made products</strong>. Our go-to brands include:<br>• American Standard<br>• Kohler<br>• State Water Heaters<br>• Rheem<br>• Bradford White<br><br>Have a preferred brand? Just let us know.",
+      quick: ['Get a quote', 'More questions'],
+    },
+    {
+      keys: ['martin', 'who', 'owner', 'license', 'licensed', 'credential', 'experience', 'background'],
+      reply: "Martin Willes has <strong>38+ years</strong> of plumbing experience — union work with Chicago Local #130, commercial and nuclear facility projects, and now coastal SC since 2020. SC Licensed Contractor <strong>#44393</strong>.",
+      quick: ['Learn more', 'Get a quote'],
+    },
+    {
+      keys: ['book', 'appointment', 'schedule', 'visit', 'come out', 'send someone'],
+      reply: "To schedule a visit or request a free quote, fill out our <a href='#contact' style='color:var(--primary)' onclick='toggleChat()'>contact form</a> or call directly at <a href='tel:8548540049' style='color:var(--primary);font-weight:700'>(854) 854-0049</a>.",
+      quick: ['Contact form', 'Call now'],
+    },
+    {
+      keys: ['hello', 'hi', 'hey', 'sup', 'good morning', 'good afternoon', 'howdy'],
+      reply: "Hey there! 👋 I'm the Beach House Plumbing assistant. I can answer questions about our services, pricing, hours, and more. What can I help you with?",
+      quick: ['Services', 'Emergency', 'Hours', 'Get a quote'],
+    },
+    {
+      keys: ['thanks', 'thank you', 'thx', 'appreciate', 'helpful'],
+      reply: "Happy to help! 😊 Is there anything else I can answer for you? For anything urgent, don't hesitate to call Martin directly at <a href='tel:8548540049' style='color:var(--primary);font-weight:700'>(854) 854-0049</a>.",
+      quick: ['More questions', 'Get a quote', 'Call now'],
+    },
+  ];
+
+  var defaultReply = {
+    reply: "Great question — for the most accurate answer, call Martin directly at <a href='tel:8548540049' style='color:var(--primary);font-weight:700'>(854) 854-0049</a> or fill out our <a href='#contact' style='color:var(--primary)' onclick='toggleChat()'>contact form</a>. He'll get back to you fast.",
+    quick: ['Services', 'Emergency', 'Hours', 'Get a quote'],
+  };
+
+  var quickActionMap = {
+    'Services': 'What services do you offer?',
+    'Emergency': 'I have a plumbing emergency',
+    'Hours': 'What are your hours?',
+    'Get a quote': 'How do I get a free quote?',
+    'Call now': 'I need to call now',
+    'Water heater': 'Tell me about water heater services',
+    'Emergency call': 'I have an emergency',
+    'Other services': 'What other services do you offer?',
+    'More services': 'Tell me about your services',
+    'Book an appointment': 'How do I book an appointment?',
+    'What brands?': 'What brands do you install?',
+    'More questions': 'I have more questions',
+    'Contact form': 'I want to use the contact form',
+    'Learn more': 'Tell me more about Martin',
+  };
+
+  function getBotResponse(text) {
+    var lower = text.toLowerCase();
+    for (var i = 0; i < KB.length; i++) {
+      for (var j = 0; j < KB[i].keys.length; j++) {
+        if (lower.indexOf(KB[i].keys[j]) !== -1) {
+          return KB[i];
+        }
+      }
+    }
+    return defaultReply;
+  }
+
+  function addMsg(html, role) {
+    var msgs = document.getElementById('chatMessages');
+    var wrap = document.createElement('div');
+    wrap.className = 'chat-msg ' + role;
+    var avatar = document.createElement('div');
+    avatar.className = 'msg-avatar';
+    avatar.textContent = role === 'bot' ? '🔧' : 'You';
+    avatar.style.fontSize = role === 'bot' ? '14px' : '9px';
+    var bubble = document.createElement('div');
+    bubble.className = 'msg-bubble';
+    bubble.innerHTML = html;
+    wrap.appendChild(avatar);
+    wrap.appendChild(bubble);
+    msgs.appendChild(wrap);
+    msgs.scrollTop = msgs.scrollHeight;
+    return wrap;
+  }
+
+  function showTyping() {
+    var msgs = document.getElementById('chatMessages');
+    var wrap = document.createElement('div');
+    wrap.className = 'chat-msg bot chat-typing';
+    wrap.id = 'typingIndicator';
+    var avatar = document.createElement('div');
+    avatar.className = 'msg-avatar';
+    avatar.textContent = '🔧';
+    var bubble = document.createElement('div');
+    bubble.className = 'msg-bubble';
+    bubble.innerHTML = '<div class="typing-dots"><span></span><span></span><span></span></div>';
+    wrap.appendChild(avatar);
+    wrap.appendChild(bubble);
+    msgs.appendChild(wrap);
+    msgs.scrollTop = msgs.scrollHeight;
+  }
+
+  function removeTyping() {
+    var el = document.getElementById('typingIndicator');
+    if (el) el.remove();
+  }
+
+  function setQuickReplies(options) {
+    var qr = document.getElementById('chatQuickReplies');
+    qr.innerHTML = '';
+    if (!options || !options.length) return;
+    options.forEach(function (label) {
+      var btn = document.createElement('button');
+      btn.className = 'qr-btn';
+      btn.textContent = label;
+      btn.addEventListener('click', function () {
+        var text = quickActionMap[label] || label;
+        handleUserMsg(text);
+      });
+      qr.appendChild(btn);
+    });
+  }
+
+  function handleUserMsg(text) {
+    setQuickReplies([]);
+    addMsg(text, 'user');
+    showTyping();
+    var delay = 600 + Math.random() * 600;
+    setTimeout(function () {
+      removeTyping();
+      var res = getBotResponse(text);
+      addMsg(res.reply, 'bot');
+      setQuickReplies(res.quick);
+    }, delay);
+  }
+
+  function initChat() {
+    showTyping();
+    setTimeout(function () {
+      removeTyping();
+      addMsg("Hi! 👋 I'm the <strong>Beach House Plumbing</strong> assistant. How can I help you today?", 'bot');
+      setQuickReplies(['Services', 'Emergency', 'Hours', 'Get a quote']);
+    }, 800);
+  }
+
+  window.chatSend = function () {
+    var input = document.getElementById('chatInput');
+    var text = input.value.trim();
+    if (!text) return;
+    input.value = '';
+    handleUserMsg(text);
+  };
+
+  document.getElementById('chatInput').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') window.chatSend();
+  });
+})();
 </script>
 </body>
 </html>
