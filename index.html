@@ -941,11 +941,14 @@ h2.section-title em {
 
 .gallery-item-img {
   width: 100%;
-  height: 100%;
+  height: 280px;
   object-fit: cover;
   display: block;
-  min-height: 220px;
   transition: transform 0.5s ease;
+}
+
+.gallery-item:first-child .gallery-item-img {
+  height: 360px;
 }
 
 .gallery-item:hover .gallery-item-img {
@@ -2522,63 +2525,73 @@ h2.section-title em {
   </div>
 
   <div class="gallery-grid">
-    <!--
-      NANO BANANA PROMPTS FOR GALLERY:
-      01: "Wide shot of a beautifully installed master bathroom in coastal home, dual vanity,
-          exposed copper pipes accent, warm lighting, photorealistic interior photography"
-      02: "Close-up of professional copper pipe installation with neat solder joints,
-          in a basement utility room, sharp focus, professional plumbing work"
-      03: "Modern tankless water heater installation on a wall, clean piping,
-          neat workmanship, coastal home laundry room, professional photo"
-      04: "Kitchen sink area renovation, new Kohler faucet installed, under-cabinet pipes
-          visible and organized, coastal home kitchen, bright and clean"
-      05: "Outdoor plumbing work on a beach house foundation, professional plumber at work,
-          sandy soil, coastal South Carolina, golden hour light"
-      06: "Finished bathroom remodel with new fixtures, American Standard toilet and sink,
-          coastal home tile work, professional real estate photography style"
-    -->
+
+    <!-- 01 — wide hero tile -->
     <div class="gallery-item">
-      <div class="gallery-item-placeholder">
-        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-        <span style="font-size:11px">Bathroom renovation — Nano Banana prompt 01</span>
-      </div>
+      <img
+        class="gallery-item-img"
+        src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=1000&q=85&fit=crop&crop=center"
+        alt="Modern bathroom renovation with clean fixtures"
+        loading="lazy"
+      />
       <div class="gallery-item-label">Master Bathroom Renovation</div>
     </div>
+
+    <!-- 02 -->
     <div class="gallery-item">
-      <div class="gallery-item-placeholder">
-        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-        <span style="font-size:11px">Copper pipe install — prompt 02</span>
-      </div>
+      <img
+        class="gallery-item-img"
+        src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=85&fit=crop&crop=center"
+        alt="Professional copper pipe installation"
+        loading="lazy"
+      />
       <div class="gallery-item-label">Copper Pipe Installation</div>
     </div>
+
+    <!-- 03 -->
     <div class="gallery-item">
-      <div class="gallery-item-placeholder">
-        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-        <span style="font-size:11px">Tankless water heater — prompt 03</span>
-      </div>
-      <div class="gallery-item-label">Tankless Water Heater Install</div>
+      <img
+        class="gallery-item-img"
+        src="https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=800&q=85&fit=crop&crop=center"
+        alt="Plumber working on pipe installation"
+        loading="lazy"
+      />
+      <div class="gallery-item-label">Expert Pipe Work</div>
     </div>
+
+    <!-- 04 -->
     <div class="gallery-item">
-      <div class="gallery-item-placeholder">
-        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-        <span style="font-size:11px">Kitchen plumbing — prompt 04</span>
-      </div>
+      <img
+        class="gallery-item-img"
+        src="https://images.unsplash.com/photo-1556909212-d5b604d0c90d?w=800&q=85&fit=crop&crop=center"
+        alt="Modern kitchen sink and faucet installation"
+        loading="lazy"
+      />
       <div class="gallery-item-label">Kitchen Plumbing Upgrade</div>
     </div>
+
+    <!-- 05 -->
     <div class="gallery-item">
-      <div class="gallery-item-placeholder">
-        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-        <span style="font-size:11px">Outdoor foundation work — prompt 05</span>
-      </div>
-      <div class="gallery-item-label">Beach House Foundation</div>
+      <img
+        class="gallery-item-img"
+        src="https://images.unsplash.com/photo-1507089947368-19c1da9775ae?w=800&q=85&fit=crop&crop=center"
+        alt="Professional plumbing tools and hardware"
+        loading="lazy"
+      />
+      <div class="gallery-item-label">Precision Hardware Install</div>
     </div>
+
+    <!-- 06 -->
     <div class="gallery-item">
-      <div class="gallery-item-placeholder">
-        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-        <span style="font-size:11px">Finished bath — prompt 06</span>
-      </div>
+      <img
+        class="gallery-item-img"
+        src="https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=800&q=85&fit=crop&crop=center"
+        alt="Finished modern bathroom remodel"
+        loading="lazy"
+      />
       <div class="gallery-item-label">Full Bathroom Remodel</div>
     </div>
+
   </div>
 </section>
 
