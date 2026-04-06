@@ -1,0 +1,2442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Beach House Plumbing LLC — Licensed Plumbing Since 1986</title>
+<meta name="description" content="Beach House Plumbing LLC — SC Licensed Contractor #44393. Residential & commercial plumbing, water heaters, emergency repairs. Serving the South Carolina coast since 1986." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+/* ── Reset & Tokens ─────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:        #07111F;
+  --surface:   #0C1B2E;
+  --surface2:  #101F33;
+  --border:    rgba(255,255,255,0.07);
+  --primary:   #D4A843;
+  --accent:    #E8C06A;
+  --text:      #EDF2F7;
+  --muted:     #6E8CA8;
+  --teal:      #2A8FA8;
+  --teal-dim:  rgba(42,143,168,0.12);
+  --gold-dim:  rgba(212,168,67,0.08);
+  --radius:    12px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+/* ── Mesh Canvas ────────────────────────────────────────────── */
+#meshCanvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.45;
+}
+
+/* ── Layer above canvas ─────────────────────────────────────── */
+.layer { position: relative; z-index: 1; }
+
+/* ── Typography helpers ─────────────────────────────────────── */
+.eyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--primary);
+  display: block;
+  margin-bottom: 14px;
+}
+
+h2.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(32px, 4vw, 56px);
+  font-weight: 400;
+  color: var(--text);
+  line-height: 1.1;
+}
+
+h2.section-title em {
+  font-style: italic;
+  color: var(--primary);
+}
+
+/* ── Nav ────────────────────────────────────────────────────── */
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 0 48px;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(7,17,31,0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  transition: background 0.3s ease;
+}
+
+.nav-logo {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  text-decoration: none;
+}
+
+.nav-logo-main {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1;
+}
+
+.nav-logo-sub {
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--primary);
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+  list-style: none;
+}
+
+.nav-links a {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.nav-links a:hover { color: var(--text); }
+
+.nav-cta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.nav-phone {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  transition: color 0.2s ease;
+}
+
+.nav-phone:hover { color: var(--primary); }
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 28px;
+  background: var(--primary);
+  color: var(--bg);
+  text-decoration: none;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-primary:hover {
+  background: var(--accent);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 28px rgba(212,168,67,0.3);
+}
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 28px;
+  background: transparent;
+  color: var(--text);
+  text-decoration: none;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.btn-outline:hover {
+  border-color: rgba(255,255,255,0.3);
+  color: var(--text);
+}
+
+/* hamburger */
+.nav-hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  padding: 4px;
+  background: none;
+  border: none;
+}
+
+.nav-hamburger span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--text);
+  transition: all 0.3s ease;
+}
+
+/* mobile menu */
+.nav-mobile {
+  display: none;
+  position: fixed;
+  top: 72px; left: 0; right: 0;
+  background: rgba(7,17,31,0.97);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  padding: 24px 48px 32px;
+  z-index: 99;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.nav-mobile.open { display: flex; }
+
+.nav-mobile a {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--muted);
+  text-decoration: none;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: color 0.2s ease;
+}
+
+.nav-mobile a:hover { color: var(--text); }
+
+/* ── Hero ────────────────────────────────────────────────────── */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 120px 48px 80px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-bg-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.18;
+  z-index: 0;
+}
+
+.hero-bg-placeholder {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 70% 50%, rgba(42,143,168,0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 80% at 20% 30%, rgba(212,168,67,0.06) 0%, transparent 60%);
+  z-index: 0;
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  gap: 80px;
+  align-items: center;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  border: 1px solid rgba(212,168,67,0.3);
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--primary);
+  margin-bottom: 24px;
+}
+
+.hero-badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--primary);
+  animation: pulse 2s ease infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.7); }
+}
+
+.hero-headline {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(40px, 5.5vw, 80px);
+  font-weight: 400;
+  color: var(--text);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  margin-bottom: 24px;
+}
+
+.hero-headline em {
+  font-style: italic;
+  color: var(--primary);
+}
+
+.hero-sub {
+  font-size: 17px;
+  color: var(--muted);
+  line-height: 1.75;
+  font-weight: 300;
+  max-width: 48ch;
+  margin-bottom: 44px;
+}
+
+.hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.hero-emergency {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 32px;
+  background: #B91C1C;
+  color: #fff;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  border-radius: 4px;
+  transition: background 0.2s ease, transform 0.2s ease;
+  animation: urgentPulse 3s ease infinite;
+}
+
+@keyframes urgentPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(185,28,28,0); }
+  50% { box-shadow: 0 0 0 8px rgba(185,28,28,0); }
+}
+
+.hero-emergency:hover {
+  background: #991B1B;
+  transform: translateY(-1px);
+}
+
+.hero-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.hero-stat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px 28px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.3s ease;
+}
+
+.hero-stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--primary), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.hero-stat-card:hover { border-color: rgba(212,168,67,0.3); }
+.hero-stat-card:hover::before { opacity: 1; }
+
+.hsc-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 42px;
+  font-weight: 600;
+  color: var(--primary);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.hsc-label {
+  font-size: 13px;
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.hero-stat-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* ── Emergency bar ───────────────────────────────────────────── */
+.emergency-bar {
+  background: #B91C1C;
+  padding: 14px 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.eb-text {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: #fff;
+  text-transform: uppercase;
+}
+
+.eb-phone {
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  transition: opacity 0.2s ease;
+}
+
+.eb-phone:hover { opacity: 0.85; }
+
+.eb-sep {
+  width: 1px;
+  height: 20px;
+  background: rgba(255,255,255,0.3);
+}
+
+/* ── Trust bar ──────────────────────────────────────────────── */
+.trust-bar {
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 0 48px;
+}
+
+.trust-bar-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--border);
+}
+
+.trust-item {
+  background: var(--bg);
+  padding: 28px 32px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.trust-icon {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  stroke: var(--primary);
+  fill: none;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.trust-text-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+
+.trust-text-sub {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+/* ── Services ────────────────────────────────────────────────── */
+.services-section {
+  padding: 120px 48px;
+}
+
+.services-header {
+  max-width: 1200px;
+  margin: 0 auto 64px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.services-header-left h2 { margin-bottom: 0; }
+
+.services-header-right {
+  font-size: 14px;
+  color: var(--muted);
+  max-width: 36ch;
+  line-height: 1.7;
+  font-weight: 300;
+}
+
+.services-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+/* Spotlight border effect */
+.service-card {
+  background: var(--surface);
+  padding: 44px 36px;
+  position: relative;
+  overflow: hidden;
+  cursor: default;
+  transition: background 0.3s ease;
+}
+
+.service-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(212,168,67,0.08), transparent 40%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.service-card:hover::before { opacity: 1; }
+.service-card:hover { background: var(--surface2); }
+
+.sc-icon {
+  width: 48px;
+  height: 48px;
+  stroke: var(--primary);
+  fill: none;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  margin-bottom: 24px;
+}
+
+.sc-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+
+.sc-desc {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.75;
+  font-weight: 300;
+  margin-bottom: 24px;
+}
+
+.sc-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.sc-tag {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 4px 12px;
+}
+
+/* ── Why Choose Us ──────────────────────────────────────────── */
+.why-section {
+  padding: 0 48px 120px;
+}
+
+.why-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+
+.why-visual {
+  position: relative;
+}
+
+.why-img {
+  width: 100%;
+  aspect-ratio: 4/5;
+  object-fit: cover;
+  border-radius: 16px;
+  display: block;
+}
+
+.why-img-placeholder {
+  width: 100%;
+  aspect-ratio: 4/5;
+  border-radius: 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.why-img-placeholder svg {
+  width: 48px;
+  height: 48px;
+  stroke: var(--muted);
+  fill: none;
+  stroke-width: 1.5;
+}
+
+.why-badge {
+  position: absolute;
+  bottom: 28px;
+  right: -24px;
+  background: var(--primary);
+  color: var(--bg);
+  padding: 18px 24px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.why-badge-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 36px;
+  font-weight: 600;
+  line-height: 1;
+  display: block;
+}
+
+.why-badge-text {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-top: 4px;
+  display: block;
+}
+
+.why-points {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  margin-top: 40px;
+}
+
+.why-point {
+  display: flex;
+  gap: 18px;
+}
+
+.wp-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: var(--gold-dim);
+  border: 1px solid rgba(212,168,67,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.wp-icon svg {
+  width: 20px;
+  height: 20px;
+  stroke: var(--primary);
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.wp-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.wp-desc {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.7;
+  font-weight: 300;
+}
+
+/* ── About ──────────────────────────────────────────────────── */
+.about-section {
+  padding: 0 48px 120px;
+  background: linear-gradient(180deg, transparent 0%, rgba(12,27,46,0.6) 100%);
+}
+
+.about-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 420px 1fr;
+  gap: 80px;
+  align-items: start;
+}
+
+.about-img-wrap {
+  position: relative;
+}
+
+.about-img {
+  width: 100%;
+  border-radius: 16px;
+  display: block;
+  object-fit: cover;
+}
+
+.about-img-placeholder {
+  width: 100%;
+  aspect-ratio: 3/4;
+  border-radius: 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.about-img-placeholder svg {
+  width: 56px;
+  height: 56px;
+  stroke: var(--muted);
+  fill: none;
+  stroke-width: 1.5;
+}
+
+.about-license-chip {
+  position: absolute;
+  bottom: -18px;
+  left: 24px;
+  background: var(--surface2);
+  border: 1px solid rgba(212,168,67,0.3);
+  border-radius: 8px;
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.alc-icon svg {
+  width: 20px;
+  height: 20px;
+  stroke: var(--primary);
+  fill: none;
+  stroke-width: 2;
+}
+
+.alc-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.alc-value {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.about-content { padding-top: 8px; }
+
+.about-content h2 { margin-bottom: 20px; }
+
+.about-content p {
+  font-size: 15px;
+  color: var(--muted);
+  line-height: 1.8;
+  font-weight: 300;
+  margin-bottom: 16px;
+}
+
+.about-credentials {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 28px 0 36px;
+}
+
+.cred-tag {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.cred-tag svg {
+  width: 14px;
+  height: 14px;
+  stroke: var(--primary);
+  fill: none;
+  stroke-width: 2;
+}
+
+.about-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-top: 36px;
+  border-left: 1px solid var(--border);
+  padding-left: 28px;
+}
+
+.at-item {
+  position: relative;
+  padding-bottom: 24px;
+}
+
+.at-item::before {
+  content: '';
+  position: absolute;
+  left: -34px;
+  top: 6px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--primary);
+  border: 2px solid var(--bg);
+}
+
+.at-year {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--primary);
+  margin-bottom: 4px;
+}
+
+.at-desc {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* ── Gallery ────────────────────────────────────────────────── */
+.gallery-section {
+  padding: 0 48px 120px;
+}
+
+.gallery-header {
+  max-width: 1200px;
+  margin: 0 auto 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.gallery-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto auto;
+  gap: 12px;
+}
+
+.gallery-item {
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  position: relative;
+}
+
+.gallery-item:first-child {
+  grid-column: span 2;
+}
+
+.gallery-item-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  min-height: 220px;
+  transition: transform 0.5s ease;
+}
+
+.gallery-item:hover .gallery-item-img {
+  transform: scale(1.03);
+}
+
+.gallery-item-placeholder {
+  width: 100%;
+  min-height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 10px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.gallery-item-placeholder svg {
+  width: 32px;
+  height: 32px;
+  stroke: var(--muted);
+  fill: none;
+  stroke-width: 1.5;
+}
+
+.gallery-item-label {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 20px 20px 16px;
+  background: linear-gradient(0deg, rgba(7,17,31,0.9) 0%, transparent 100%);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text);
+  letter-spacing: 0.06em;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.gallery-item:hover .gallery-item-label {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Testimonials ───────────────────────────────────────────── */
+.testimonials-section {
+  padding: 0 48px 120px;
+}
+
+.testimonials-header {
+  max-width: 1200px;
+  margin: 0 auto 56px;
+}
+
+.testimonials-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.testimonial-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 36px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  transition: border-color 0.3s ease;
+}
+
+.testimonial-card:hover {
+  border-color: rgba(212,168,67,0.2);
+}
+
+.tc-stars {
+  display: flex;
+  gap: 3px;
+}
+
+.tc-stars svg {
+  width: 16px;
+  height: 16px;
+  fill: var(--primary);
+  stroke: none;
+}
+
+.tc-quote {
+  font-size: 15px;
+  color: var(--text);
+  line-height: 1.75;
+  font-weight: 300;
+  font-style: italic;
+  font-family: 'Playfair Display', serif;
+  flex: 1;
+}
+
+.tc-author {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-top: 4px;
+  border-top: 1px solid var(--border);
+}
+
+.tc-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--gold-dim);
+  border: 1px solid rgba(212,168,67,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 16px;
+  color: var(--primary);
+  flex-shrink: 0;
+}
+
+.tc-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.tc-location {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+/* ── FAQ ────────────────────────────────────────────────────── */
+.faq-section {
+  padding: 0 48px 120px;
+}
+
+.faq-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  gap: 80px;
+  align-items: start;
+}
+
+.faq-left h2 { margin-bottom: 16px; }
+
+.faq-left p {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.75;
+  font-weight: 300;
+  margin-bottom: 32px;
+}
+
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.faq-item { background: var(--surface); }
+
+.faq-question {
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 22px 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  text-align: left;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text);
+  transition: color 0.2s ease;
+}
+
+.faq-question:hover { color: var(--primary); }
+.faq-question.open { color: var(--primary); }
+
+.faq-icon {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+
+.faq-question.open .faq-icon { transform: rotate(45deg); }
+
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease;
+}
+
+.faq-answer-inner {
+  padding: 0 28px 22px;
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.8;
+  font-weight: 300;
+}
+
+/* ── Contact ────────────────────────────────────────────────── */
+.contact-section {
+  padding: 0 48px 120px;
+}
+
+.contact-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.contact-header {
+  margin-bottom: 56px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.contact-header-sub {
+  font-size: 14px;
+  color: var(--muted);
+  max-width: 40ch;
+  line-height: 1.7;
+  font-weight: 300;
+}
+
+.contact-layout {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 40px;
+  align-items: start;
+}
+
+/* Contact form */
+.contact-form-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 44px;
+}
+
+.cf-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--text);
+  margin-bottom: 32px;
+}
+
+.cf-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.cf-field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin-bottom: 16px;
+}
+
+.cf-field label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.cf-field input,
+.cf-field select,
+.cf-field textarea {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 13px 16px;
+  font-size: 14px;
+  font-family: 'Inter', sans-serif;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s ease;
+  width: 100%;
+}
+
+.cf-field input:focus,
+.cf-field select:focus,
+.cf-field textarea:focus {
+  border-color: var(--primary);
+}
+
+.cf-field select option { background: #111; }
+.cf-field textarea { resize: vertical; min-height: 110px; }
+
+.cf-submit {
+  width: 100%;
+  padding: 16px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+}
+
+/* Contact sidebar */
+.contact-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.cs-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 28px;
+}
+
+.cs-card-title {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--primary);
+  margin-bottom: 20px;
+}
+
+.cs-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.cs-row:last-child { border-bottom: none; }
+
+.cs-row svg {
+  width: 16px;
+  height: 16px;
+  stroke: var(--primary);
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.cs-row-text {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.cs-row-text strong { color: var(--text); font-weight: 500; }
+
+.cs-row a {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.hours-table { width: 100%; }
+
+.ht-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+
+.ht-row:last-child { border-bottom: none; }
+
+.ht-day { color: var(--muted); }
+.ht-time { color: var(--text); font-weight: 500; }
+.ht-time.emerg { color: var(--primary); font-size: 11px; letter-spacing: 0.05em; }
+
+/* Contact form success */
+.cf-success {
+  display: none;
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.cf-success.active { display: block; }
+
+.cf-success-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 1.5px solid var(--primary);
+  margin: 0 auto 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cf-success-icon svg {
+  width: 24px;
+  height: 24px;
+  stroke: var(--primary);
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.cf-success h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  font-weight: 400;
+  color: var(--text);
+  margin-bottom: 10px;
+}
+
+.cf-success p {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+/* ── Brands ─────────────────────────────────────────────────── */
+.brands-section {
+  padding: 0 48px 100px;
+}
+
+.brands-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 44px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 36px;
+}
+
+.brands-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.brands-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 60px;
+  flex-wrap: wrap;
+}
+
+.brand-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.2);
+  letter-spacing: 0.04em;
+  transition: color 0.3s ease;
+}
+
+.brand-name:hover { color: rgba(255,255,255,0.55); }
+
+/* ── Footer ─────────────────────────────────────────────────── */
+.footer {
+  border-top: 1px solid var(--border);
+  padding: 64px 48px 40px;
+}
+
+.footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-top {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 60px;
+  padding-bottom: 48px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+
+.footer-brand {}
+
+.footer-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--text);
+  text-decoration: none;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.footer-tagline {
+  font-size: 13px;
+  color: var(--muted);
+  font-style: italic;
+  font-family: 'Playfair Display', serif;
+  font-weight: 300;
+  margin-bottom: 20px;
+}
+
+.footer-license {
+  font-size: 11px;
+  color: rgba(255,255,255,0.25);
+  letter-spacing: 0.08em;
+}
+
+.footer-nav-col {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.footer-nav-col-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--primary);
+  margin-bottom: 4px;
+}
+
+.footer-nav-col a {
+  font-size: 13px;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.footer-nav-col a:hover { color: var(--text); }
+
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.footer-copy {
+  font-size: 12px;
+  color: rgba(255,255,255,0.25);
+}
+
+.footer-copy span { color: var(--primary); }
+
+.footer-rule {
+  font-size: 11px;
+  color: rgba(255,255,255,0.15);
+  letter-spacing: 0.06em;
+}
+
+/* ── Scroll fade-in ─────────────────────────────────────────── */
+.fade-up {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.fade-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Responsive ─────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .hero-inner { grid-template-columns: 1fr; gap: 48px; }
+  .hero-stat-row { grid-template-columns: 1fr 1fr; }
+  .why-inner { grid-template-columns: 1fr; gap: 48px; }
+  .why-badge { right: 0; }
+  .about-inner { grid-template-columns: 1fr; }
+  .services-grid { grid-template-columns: 1fr 1fr; }
+  .faq-inner { grid-template-columns: 1fr; gap: 40px; }
+  .contact-layout { grid-template-columns: 1fr; }
+  .footer-top { grid-template-columns: 1fr; gap: 36px; }
+}
+
+@media (max-width: 768px) {
+  .nav { padding: 0 24px; }
+  .nav-links { display: none; }
+  .nav-phone { display: none; }
+  .nav-hamburger { display: flex; }
+  .hero { padding: 100px 24px 60px; }
+  .emergency-bar { padding: 14px 24px; flex-direction: column; gap: 8px; }
+  .trust-bar { padding: 0 24px; }
+  .trust-bar-inner { grid-template-columns: 1fr 1fr; }
+  .services-section, .why-section, .about-section, .gallery-section,
+  .testimonials-section, .faq-section, .contact-section, .brands-section { padding-left: 24px; padding-right: 24px; }
+  .services-grid { grid-template-columns: 1fr; }
+  .testimonials-grid { grid-template-columns: 1fr; }
+  .gallery-grid { grid-template-columns: 1fr 1fr; }
+  .gallery-item:first-child { grid-column: span 2; }
+  .cf-row { grid-template-columns: 1fr; }
+  .contact-form-card { padding: 28px; }
+  .footer { padding: 40px 24px 28px; }
+}
+
+@media (max-width: 480px) {
+  .hero-actions { flex-direction: column; align-items: flex-start; }
+  .trust-bar-inner { grid-template-columns: 1fr; }
+  .hero-stat-row { grid-template-columns: 1fr; }
+  .gallery-grid { grid-template-columns: 1fr; }
+  .gallery-item:first-child { grid-column: span 1; }
+  .brands-row { gap: 32px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── Mesh Canvas ── -->
+<canvas id="meshCanvas" class="layer" aria-hidden="true"></canvas>
+
+<!-- ── Nav ── -->
+<nav class="nav layer">
+  <a href="#" class="nav-logo">
+    <span class="nav-logo-main">Beach House Plumbing</span>
+    <span class="nav-logo-sub">Licensed Since 1986</span>
+  </a>
+
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#gallery">Our Work</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+
+  <div class="nav-cta">
+    <a href="tel:8548540049" class="nav-phone">(854) 854-0049</a>
+    <a href="#contact" class="btn-primary">Free Quote</a>
+  </div>
+
+  <button class="nav-hamburger" onclick="toggleMobileNav()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="nav-mobile layer" id="mobileNav">
+  <a href="#services" onclick="toggleMobileNav()">Services</a>
+  <a href="#about" onclick="toggleMobileNav()">About</a>
+  <a href="#gallery" onclick="toggleMobileNav()">Our Work</a>
+  <a href="#contact" onclick="toggleMobileNav()">Contact</a>
+  <a href="tel:8548540049">(854) 854-0049</a>
+  <a href="#contact" class="btn-primary" style="text-align:center;justify-content:center" onclick="toggleMobileNav()">Get a Free Quote</a>
+</div>
+
+<!-- ── Hero ── -->
+<section class="hero layer">
+  <div class="hero-bg-placeholder" aria-hidden="true"></div>
+  <!--
+    FLOW / VEO 3 VIDEO PROMPT:
+    "Cinematic close-up of professional plumber's hands installing copper pipe fittings
+    in a bright coastal home, warm morning light streaming through windows, bokeh background
+    showing ocean view, 4K, slow motion, photorealistic, professional trades atmosphere"
+    Replace below with: <video class="hero-bg-video" autoplay muted loop playsinline src="YOUR_VIDEO.mp4"></video>
+  -->
+
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-badge">
+        <span class="hero-badge-dot"></span>
+        Available for Emergency Calls
+      </div>
+      <h1 class="hero-headline">
+        Expert plumbing<br>
+        for the <em>South Carolina</em><br>
+        coast
+      </h1>
+      <p class="hero-sub">
+        38 years of residential and commercial plumbing experience. SC Licensed Contractor #44393. American-made products. 1-year labor warranty on every job.
+      </p>
+      <div class="hero-actions">
+        <a href="tel:8548540049" class="hero-emergency">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.42 12.07 19.79 19.79 0 01.36 3.49 2 2 0 012.33 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 8.37a16 16 0 006.72 6.72l.86-.86a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+          Emergency Line
+        </a>
+        <a href="#contact" class="btn-primary">Get a Free Quote</a>
+        <a href="#services" class="btn-outline">View Services</a>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div class="hero-stat-row">
+        <div class="hero-stat-card fade-up">
+          <div class="hsc-num">38<span style="font-size:24px">+</span></div>
+          <div class="hsc-label">Years of experience</div>
+        </div>
+        <div class="hero-stat-card fade-up">
+          <div class="hsc-num">1yr</div>
+          <div class="hsc-label">Labor warranty</div>
+        </div>
+      </div>
+      <div class="hero-stat-card fade-up" style="margin-top:16px">
+        <div class="hsc-num" style="font-size:28px">SC #44393</div>
+        <div class="hsc-label">Licensed Plumbing Contractor — South Carolina</div>
+      </div>
+      <div class="hero-stat-card fade-up" style="margin-top:16px">
+        <div style="display:flex;align-items:center;gap:12px">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0112 2a8 8 0 018 8.2c0 7.3-8 11.8-8 11.8z"/></svg>
+          <div>
+            <div style="font-size:13px;font-weight:600;color:var(--text)">Residential & Commercial</div>
+            <div style="font-size:12px;color:var(--muted)">Serving coastal South Carolina</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Emergency Bar ── -->
+<div class="emergency-bar layer">
+  <span class="eb-text">24/7 Emergency Plumbing</span>
+  <div class="eb-sep"></div>
+  <a href="tel:8548540049" class="eb-phone">(854) 854-0049</a>
+  <div class="eb-sep"></div>
+  <span class="eb-text">Call Now — No Extra Charge for Evenings</span>
+</div>
+
+<!-- ── Trust Bar ── -->
+<div class="trust-bar layer">
+  <div class="trust-bar-inner">
+    <div class="trust-item">
+      <svg class="trust-icon" viewBox="0 0 24 24"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0112 2a8 8 0 018 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg>
+      <div>
+        <p class="trust-text-title">SC Licensed & Insured</p>
+        <p class="trust-text-sub">Contractor Lic. #44393</p>
+      </div>
+    </div>
+    <div class="trust-item">
+      <svg class="trust-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      <div>
+        <p class="trust-text-title">Since 1986</p>
+        <p class="trust-text-sub">38+ years in the trade</p>
+      </div>
+    </div>
+    <div class="trust-item">
+      <svg class="trust-icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <div>
+        <p class="trust-text-title">1-Year Labor Warranty</p>
+        <p class="trust-text-sub">Backed by manufacturer warranty</p>
+      </div>
+    </div>
+    <div class="trust-item">
+      <svg class="trust-icon" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>
+      <div>
+        <p class="trust-text-title">American-Made Products</p>
+        <p class="trust-text-sub">Your preferred brand, installed right</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Services ── -->
+<section class="services-section layer" id="services">
+  <div class="services-header fade-up">
+    <div class="services-header-left">
+      <span class="eyebrow">What We Do</span>
+      <h2 class="section-title">Full-service plumbing,<br><em>done right</em></h2>
+    </div>
+    <p class="services-header-right">From emergency repairs to full installations — residential homes, commercial properties, and everything in between. Every job backed by a 1-year labor warranty.</p>
+  </div>
+
+  <div class="services-grid" id="servicesGrid">
+
+    <div class="service-card fade-up">
+      <svg class="sc-icon" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10"/><path d="M12 8v4l3 3"/><path d="M18 2l4 4-4 4"/><path d="M22 2l-4 4"/></svg>
+      <h3 class="sc-title">Emergency Repairs</h3>
+      <p class="sc-desc">Burst pipes, leaks, backups — we respond fast. No extra charge for evening calls. When water can't wait, neither do we.</p>
+      <div class="sc-tags">
+        <span class="sc-tag">24/7 Response</span>
+        <span class="sc-tag">Burst Pipes</span>
+        <span class="sc-tag">Leak Detection</span>
+      </div>
+    </div>
+
+    <div class="service-card fade-up">
+      <svg class="sc-icon" viewBox="0 0 24 24"><path d="M20 7H4a2 2 0 00-2 2v6a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z"/><path d="M12 7V5a2 2 0 00-2-2H8"/><circle cx="12" cy="12" r="1"/></svg>
+      <h3 class="sc-title">Water Heater Services</h3>
+      <p class="sc-desc">Installation, replacement, and repair of tank and tankless water heaters. State, Rheem, Bradford White — your brand, installed properly.</p>
+      <div class="sc-tags">
+        <span class="sc-tag">Installation</span>
+        <span class="sc-tag">Tankless</span>
+        <span class="sc-tag">Repair</span>
+      </div>
+    </div>
+
+    <div class="service-card fade-up">
+      <svg class="sc-icon" viewBox="0 0 24 24"><path d="M12 2a10 10 0 00-6.88 17.25"/><path d="M20 7H9a2 2 0 00-2 2v6a2 2 0 002 2h11"/><path d="M17 22V12"/><path d="M20 15l-3 3-3-3"/></svg>
+      <h3 class="sc-title">Drain Cleaning</h3>
+      <p class="sc-desc">Stubborn clogs, slow drains, and main line backups. Professional hydro-jetting and snaking for lasting results — not just a temporary fix.</p>
+      <div class="sc-tags">
+        <span class="sc-tag">Hydro-Jetting</span>
+        <span class="sc-tag">Main Line</span>
+        <span class="sc-tag">Camera Inspection</span>
+      </div>
+    </div>
+
+    <div class="service-card fade-up">
+      <svg class="sc-icon" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <h3 class="sc-title">Kitchen & Bath</h3>
+      <p class="sc-desc">Full fixture installations, remodels, faucet replacements, and rough-in plumbing for new construction and renovations. American Standard. Kohler.</p>
+      <div class="sc-tags">
+        <span class="sc-tag">Remodels</span>
+        <span class="sc-tag">Fixtures</span>
+        <span class="sc-tag">Rough-In</span>
+      </div>
+    </div>
+
+    <div class="service-card fade-up">
+      <svg class="sc-icon" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      <h3 class="sc-title">Commercial Plumbing</h3>
+      <p class="sc-desc">Industrial and commercial installations backed by decades of union plumbing experience, including nuclear facility work with Chicago Local #130.</p>
+      <div class="sc-tags">
+        <span class="sc-tag">Industrial</span>
+        <span class="sc-tag">New Construction</span>
+        <span class="sc-tag">Code Compliance</span>
+      </div>
+    </div>
+
+    <div class="service-card fade-up">
+      <svg class="sc-icon" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+      <h3 class="sc-title">Inspections & Quotes</h3>
+      <p class="sc-desc">Free quotes on all new work. SC licensed home inspector on staff — get your plumbing assessed before buying or selling coastal property.</p>
+      <div class="sc-tags">
+        <span class="sc-tag">Free Quotes</span>
+        <span class="sc-tag">Home Inspection</span>
+        <span class="sc-tag">Pre-Sale</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── Why Choose Us ── -->
+<section class="why-section layer">
+  <div class="why-inner">
+    <div class="why-visual fade-up">
+      <!--
+        NANO BANANA / IMAGEN PROMPT:
+        "Professional licensed plumber in clean uniform inspecting pipe connections
+        under a kitchen sink in a coastal South Carolina home, warm natural light,
+        photorealistic, high quality, confident pose, American-made tools visible"
+      -->
+      <div class="why-img-placeholder">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        <span>Add AI-generated image here</span>
+        <span style="font-size:11px;opacity:0.5">See Nano Banana prompt above</span>
+      </div>
+      <div class="why-badge">
+        <span class="why-badge-num">500+</span>
+        <span class="why-badge-text">Homes Served</span>
+      </div>
+    </div>
+
+    <div class="why-content fade-up">
+      <span class="eyebrow">Why Beach House Plumbing</span>
+      <h2 class="section-title">The kind of plumber<br>your <em>neighbors recommend</em></h2>
+
+      <div class="why-points">
+        <div class="why-point">
+          <div class="wp-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0112 2a8 8 0 018 8.2c0 7.3-8 11.8-8 11.8z"/></svg>
+          </div>
+          <div>
+            <p class="wp-title">Deep coastal expertise</p>
+            <p class="wp-desc">Coastal homes face unique plumbing challenges — saltwater corrosion, hurricane prep, slab foundations. Martin has seen it all, solved it all.</p>
+          </div>
+        </div>
+        <div class="why-point">
+          <div class="wp-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <div>
+            <p class="wp-title">No subcontractors</p>
+            <p class="wp-desc">Martin handles the work personally. You deal with the licensed professional, not a crew of strangers. That's accountability you can depend on.</p>
+          </div>
+        </div>
+        <div class="why-point">
+          <div class="wp-icon">
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div>
+            <p class="wp-title">American-made materials</p>
+            <p class="wp-desc">We stock and install only American-made products. Better quality, longer lifespan, and manufacturers who stand behind their warranties.</p>
+          </div>
+        </div>
+        <div class="why-point">
+          <div class="wp-icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div>
+            <p class="wp-title">Transparent, upfront pricing</p>
+            <p class="wp-desc">Free quotes, no surprise charges. We walk you through the scope before work begins so you know exactly what you're paying for.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── About ── -->
+<section class="about-section layer" id="about">
+  <div class="about-inner">
+    <div class="about-img-wrap fade-up">
+      <!--
+        NANO BANANA / IMAGEN PROMPT:
+        "Portrait of a seasoned, confident master plumber in his 50s wearing a clean
+        blue work shirt, standing in front of a coastal South Carolina home exterior,
+        professional headshot style, natural daylight, trustworthy expression, photorealistic"
+      -->
+      <div class="about-img-placeholder">
+        <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <span>Add Martin's photo here</span>
+        <span style="font-size:11px;opacity:0.5">See Nano Banana prompt above</span>
+      </div>
+      <div class="about-license-chip">
+        <div class="alc-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div>
+          <p class="alc-label">SC License</p>
+          <p class="alc-value">#44393</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="about-content fade-up">
+      <span class="eyebrow">About Martin Willes</span>
+      <h2 class="section-title">38 years in the<br><em>trade. One name.</em></h2>
+
+      <p>Martin Willes has been a working plumber since 1986 — before many of his clients were born. What started as union work with Chicago Plumbers Local #130 grew into a career spanning hundreds of residential homes, commercial buildings, and even nuclear facilities.</p>
+
+      <p>After years of raising the bar in New Mexico with Enchanted Skies Plumbing LLC, Martin moved to the South Carolina coast and founded Beach House Plumbing LLC in 2020. Today he brings that depth of experience to every coastal home and business that trusts him with their plumbing.</p>
+
+      <div class="about-credentials">
+        <span class="cred-tag">
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          SC Plumbing Contractor
+        </span>
+        <span class="cred-tag">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          38 Years Experience
+        </span>
+        <span class="cred-tag">
+          <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>
+          SC Home Inspector
+        </span>
+        <span class="cred-tag">
+          <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+          Custom Home Builder
+        </span>
+      </div>
+
+      <div class="about-timeline">
+        <div class="at-item">
+          <p class="at-year">1986 — Career Start</p>
+          <p class="at-desc">Entered the plumbing trade. Began residential and commercial work across Chicago.</p>
+        </div>
+        <div class="at-item">
+          <p class="at-year">1994–2007 — Chicago Local #130</p>
+          <p class="at-desc">Union plumber completing commercial, industrial, and nuclear facility installations.</p>
+        </div>
+        <div class="at-item">
+          <p class="at-year">2007–2020 — New Mexico Local #412</p>
+          <p class="at-desc">Continued union work; founded Enchanted Skies Plumbing LLC in 2011.</p>
+        </div>
+        <div class="at-item">
+          <p class="at-year">2009 — Custom Home Builder</p>
+          <p class="at-desc">Added SC licensed home builder credentials, expanding expertise to full construction.</p>
+        </div>
+        <div class="at-item">
+          <p class="at-year">2020 — Beach House Plumbing LLC</p>
+          <p class="at-desc">Founded Beach House Plumbing on the South Carolina coast. SC License #44393.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Gallery ── -->
+<section class="gallery-section layer" id="gallery">
+  <div class="gallery-header fade-up">
+    <div>
+      <span class="eyebrow">Our Work</span>
+      <h2 class="section-title">Projects that<br><em>speak for themselves</em></h2>
+    </div>
+    <a href="#contact" class="btn-outline">Start Your Project</a>
+  </div>
+
+  <div class="gallery-grid">
+    <!--
+      NANO BANANA PROMPTS FOR GALLERY:
+      01: "Wide shot of a beautifully installed master bathroom in coastal home, dual vanity,
+          exposed copper pipes accent, warm lighting, photorealistic interior photography"
+      02: "Close-up of professional copper pipe installation with neat solder joints,
+          in a basement utility room, sharp focus, professional plumbing work"
+      03: "Modern tankless water heater installation on a wall, clean piping,
+          neat workmanship, coastal home laundry room, professional photo"
+      04: "Kitchen sink area renovation, new Kohler faucet installed, under-cabinet pipes
+          visible and organized, coastal home kitchen, bright and clean"
+      05: "Outdoor plumbing work on a beach house foundation, professional plumber at work,
+          sandy soil, coastal South Carolina, golden hour light"
+      06: "Finished bathroom remodel with new fixtures, American Standard toilet and sink,
+          coastal home tile work, professional real estate photography style"
+    -->
+    <div class="gallery-item">
+      <div class="gallery-item-placeholder">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        <span style="font-size:11px">Bathroom renovation — Nano Banana prompt 01</span>
+      </div>
+      <div class="gallery-item-label">Master Bathroom Renovation</div>
+    </div>
+    <div class="gallery-item">
+      <div class="gallery-item-placeholder">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        <span style="font-size:11px">Copper pipe install — prompt 02</span>
+      </div>
+      <div class="gallery-item-label">Copper Pipe Installation</div>
+    </div>
+    <div class="gallery-item">
+      <div class="gallery-item-placeholder">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        <span style="font-size:11px">Tankless water heater — prompt 03</span>
+      </div>
+      <div class="gallery-item-label">Tankless Water Heater Install</div>
+    </div>
+    <div class="gallery-item">
+      <div class="gallery-item-placeholder">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        <span style="font-size:11px">Kitchen plumbing — prompt 04</span>
+      </div>
+      <div class="gallery-item-label">Kitchen Plumbing Upgrade</div>
+    </div>
+    <div class="gallery-item">
+      <div class="gallery-item-placeholder">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        <span style="font-size:11px">Outdoor foundation work — prompt 05</span>
+      </div>
+      <div class="gallery-item-label">Beach House Foundation</div>
+    </div>
+    <div class="gallery-item">
+      <div class="gallery-item-placeholder">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        <span style="font-size:11px">Finished bath — prompt 06</span>
+      </div>
+      <div class="gallery-item-label">Full Bathroom Remodel</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Testimonials ── -->
+<section class="testimonials-section layer">
+  <div class="testimonials-header fade-up">
+    <span class="eyebrow">What Clients Say</span>
+    <h2 class="section-title">Built on reputation,<br><em>proven by results</em></h2>
+  </div>
+
+  <div class="testimonials-grid">
+    <div class="testimonial-card fade-up">
+      <div class="tc-stars">
+        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      </div>
+      <p class="tc-quote">"Martin replaced our water heater same day I called. Showed up on time, explained everything clearly, and left the utility room cleaner than he found it. Highly recommend."</p>
+      <div class="tc-author">
+        <div class="tc-avatar">S</div>
+        <div>
+          <p class="tc-name">Sarah T.</p>
+          <p class="tc-location">Myrtle Beach, SC</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="testimonial-card fade-up">
+      <div class="tc-stars">
+        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      </div>
+      <p class="tc-quote">"We used Beach House Plumbing for a full bathroom remodel and the work was flawless. Martin's union background shows — every connection was tight, inspected, and right. Two years later, zero issues."</p>
+      <div class="tc-author">
+        <div class="tc-avatar">D</div>
+        <div>
+          <p class="tc-name">David & Karen R.</p>
+          <p class="tc-location">Pawleys Island, SC</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="testimonial-card fade-up">
+      <div class="tc-stars">
+        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      </div>
+      <p class="tc-quote">"Called at 9pm with a burst pipe. Martin picked up, walked me through shutting off the water, and was at my door by 7am the next morning. That's the kind of service you can only get from someone who genuinely cares."</p>
+      <div class="tc-author">
+        <div class="tc-avatar">J</div>
+        <div>
+          <p class="tc-name">James M.</p>
+          <p class="tc-location">Surfside Beach, SC</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Brands ── -->
+<section class="brands-section layer">
+  <div class="brands-inner fade-up">
+    <p class="brands-label">Preferred American-Made Brands We Install</p>
+    <div class="brands-row">
+      <span class="brand-name">American Standard</span>
+      <span class="brand-name">Kohler</span>
+      <span class="brand-name">State Water Heaters</span>
+      <span class="brand-name">Rheem</span>
+      <span class="brand-name">Bradford White</span>
+    </div>
+  </div>
+</section>
+
+<!-- ── FAQ ── -->
+<section class="faq-section layer">
+  <div class="faq-inner">
+    <div class="faq-left fade-up">
+      <span class="eyebrow">FAQ</span>
+      <h2 class="section-title">Common<br><em>questions</em></h2>
+      <p>Everything you need to know before calling. Still have a question? Reach out — free quotes always.</p>
+      <a href="#contact" class="btn-primary">Contact Martin</a>
+    </div>
+
+    <div class="faq-list fade-up">
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          Do you charge extra for evening or weekend calls?
+          <svg class="faq-icon" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">No extra charge for evening calls. We believe emergencies don't follow business hours, and your plumbing problem shouldn't cost you double just because it happened after 5pm.</div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          What areas do you serve?
+          <svg class="faq-icon" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">We serve the greater South Carolina coastal region including Myrtle Beach, Surfside Beach, Pawleys Island, Murrells Inlet, and surrounding communities. Call to confirm your area.</div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          What does the 1-year warranty cover?
+          <svg class="faq-icon" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">All labor is covered for 1 year from the date of service. Parts and fixtures are backed by manufacturer warranties, which vary by brand. We use reputable American-made brands specifically because their warranties are strong.</div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          Can you install my preferred brand or fixture?
+          <svg class="faq-icon" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">Yes. We install American Standard, Kohler, State, Rheem, Bradford White, and other quality brands. If you have a specific product in mind, contact us and we'll confirm compatibility and source it for you.</div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          Do you handle commercial jobs?
+          <svg class="faq-icon" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">Absolutely. Martin's background includes decades of commercial and industrial plumbing, including nuclear facility work. Small business or large commercial project — get in touch for a quote.</div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          How quickly can you respond to an emergency?
+          <svg class="faq-icon" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">We aim to respond to emergencies within hours. For after-hours calls, Martin will walk you through immediate steps (like shutting off the main water supply) on the phone while coordinating arrival. Call (854) 854-0049.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Contact ── -->
+<section class="contact-section layer" id="contact">
+  <div class="contact-inner">
+    <div class="contact-header fade-up">
+      <div>
+        <span class="eyebrow">Get In Touch</span>
+        <h2 class="section-title">Request a free<br><em>quote today</em></h2>
+      </div>
+      <p class="contact-header-sub">Describe your project or problem and we'll get back to you fast. No obligation, no sales pressure.</p>
+    </div>
+
+    <div class="contact-layout">
+
+      <div class="contact-form-card fade-up">
+        <div id="cfFormWrap">
+          <p class="cf-title">Tell us about your project</p>
+
+          <div class="cf-row">
+            <div class="cf-field">
+              <label for="cf-first">First Name</label>
+              <input id="cf-first" type="text" placeholder="John" />
+            </div>
+            <div class="cf-field">
+              <label for="cf-last">Last Name</label>
+              <input id="cf-last" type="text" placeholder="Smith" />
+            </div>
+          </div>
+
+          <div class="cf-row">
+            <div class="cf-field">
+              <label for="cf-phone">Phone</label>
+              <input id="cf-phone" type="tel" placeholder="(854) 000-0000" />
+            </div>
+            <div class="cf-field">
+              <label for="cf-email">Email</label>
+              <input id="cf-email" type="email" placeholder="you@example.com" />
+            </div>
+          </div>
+
+          <div class="cf-field">
+            <label for="cf-service">Service Needed</label>
+            <select id="cf-service">
+              <option value="">Select a service...</option>
+              <option>Emergency Repair</option>
+              <option>Water Heater (Installation or Repair)</option>
+              <option>Drain Cleaning</option>
+              <option>Kitchen or Bathroom Plumbing</option>
+              <option>Commercial Plumbing</option>
+              <option>Home Inspection</option>
+              <option>Other / Not Sure</option>
+            </select>
+          </div>
+
+          <div class="cf-field">
+            <label for="cf-msg">Describe the Issue or Project</label>
+            <textarea id="cf-msg" placeholder="Tell us what's going on or what you're looking to have done..."></textarea>
+          </div>
+
+          <button class="btn-primary cf-submit" onclick="submitContactForm()">Send Message — It's Free</button>
+        </div>
+
+        <div class="cf-success" id="cfSuccess">
+          <div class="cf-success-icon">
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <h3>Message received.</h3>
+          <p>Martin will be in touch shortly. For urgent issues, call directly at <strong><a href="tel:8548540049" style="color:var(--primary)">(854) 854-0049</a></strong>.</p>
+        </div>
+      </div>
+
+      <aside class="contact-sidebar fade-up">
+        <div class="cs-card">
+          <p class="cs-card-title">Call Us</p>
+          <div class="cs-row">
+            <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.42 12.07 19.79 19.79 0 01.36 3.49 2 2 0 012.33 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 8.37a16 16 0 006.72 6.72l.86-.86a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+            <div class="cs-row-text"><a href="tel:8548540049">(854) 854-0049</a><br><span>Available for emergencies 24/7</span></div>
+          </div>
+        </div>
+
+        <div class="cs-card">
+          <p class="cs-card-title">Hours</p>
+          <div class="hours-table">
+            <div class="ht-row"><span class="ht-day">Mon – Fri</span><span class="ht-time">7:00 AM – 6:00 PM</span></div>
+            <div class="ht-row"><span class="ht-day">Saturday</span><span class="ht-time">8:00 AM – 3:00 PM</span></div>
+            <div class="ht-row"><span class="ht-day">Sunday</span><span class="ht-time">By Appointment</span></div>
+            <div class="ht-row"><span class="ht-day">Emergencies</span><span class="ht-time emerg">24/7 — Call Anytime</span></div>
+          </div>
+        </div>
+
+        <div class="cs-card">
+          <p class="cs-card-title">Good to Know</p>
+          <div class="cs-row">
+            <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <div class="cs-row-text"><strong>SC License #44393</strong><br>Fully insured & bonded</div>
+          </div>
+          <div class="cs-row">
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            <div class="cs-row-text"><strong>Free quotes</strong> on all new work</div>
+          </div>
+          <div class="cs-row">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <div class="cs-row-text"><strong>1-year warranty</strong> on all labor</div>
+          </div>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── Footer ── -->
+<footer class="footer layer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="#" class="footer-logo">Beach House Plumbing LLC</a>
+        <p class="footer-tagline">"Honest work. American products. Every time."</p>
+        <p class="footer-license">SC Plumbing Contractor License #44393 &nbsp;|&nbsp; Insured &amp; Bonded</p>
+      </div>
+      <div class="footer-nav-col">
+        <p class="footer-nav-col-label">Services</p>
+        <a href="#services">Emergency Repairs</a>
+        <a href="#services">Water Heaters</a>
+        <a href="#services">Drain Cleaning</a>
+        <a href="#services">Kitchen &amp; Bath</a>
+        <a href="#services">Commercial</a>
+      </div>
+      <div class="footer-nav-col">
+        <p class="footer-nav-col-label">Company</p>
+        <a href="#about">About Martin</a>
+        <a href="#gallery">Our Work</a>
+        <a href="#contact">Get a Quote</a>
+        <a href="tel:8548540049">(854) 854-0049</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">&copy; 2026 <span>Beach House Plumbing LLC</span>. All rights reserved.</p>
+      <p class="footer-rule">Serving coastal South Carolina since 1986</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ── Scripts ── -->
+<script>
+/* ── Mesh Gradient Background ── */
+(function () {
+  var canvas = document.getElementById('meshCanvas');
+  var ctx = canvas.getContext('2d');
+
+  var colors = [
+    [42, 143, 168],
+    [15, 58, 90],
+    [212, 168, 67],
+    [7, 30, 60],
+    [28, 80, 110],
+  ];
+
+  var blobs = colors.map(function (c, i) {
+    return {
+      x: Math.random(), y: Math.random(),
+      vx: (Math.random() - 0.5) * 0.0004,
+      vy: (Math.random() - 0.5) * 0.0004,
+      r: 0.28 + Math.random() * 0.18,
+      color: c,
+    };
+  });
+
+  function resize() {
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    blobs.forEach(function (b) {
+      b.x += b.vx; b.y += b.vy;
+      if (b.x < 0 || b.x > 1) b.vx *= -1;
+      if (b.y < 0 || b.y > 1) b.vy *= -1;
+      var gx = b.x * canvas.width;
+      var gy = b.y * canvas.height;
+      var gr = b.r * Math.max(canvas.width, canvas.height);
+      var g = ctx.createRadialGradient(gx, gy, 0, gx, gy, gr);
+      g.addColorStop(0, 'rgba(' + b.color[0] + ',' + b.color[1] + ',' + b.color[2] + ',0.55)');
+      g.addColorStop(1, 'rgba(' + b.color[0] + ',' + b.color[1] + ',' + b.color[2] + ',0)');
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      ctx.arc(gx, gy, gr, 0, Math.PI * 2);
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+
+  window.addEventListener('resize', resize);
+  resize();
+  draw();
+})();
+
+/* ── Spotlight border on service cards ── */
+(function () {
+  document.querySelectorAll('.service-card').forEach(function (card) {
+    card.addEventListener('mousemove', function (e) {
+      var rect = card.getBoundingClientRect();
+      card.style.setProperty('--mouse-x', (e.clientX - rect.left) + 'px');
+      card.style.setProperty('--mouse-y', (e.clientY - rect.top) + 'px');
+    });
+  });
+})();
+
+/* ── Scroll fade-in ── */
+(function () {
+  var els = document.querySelectorAll('.fade-up');
+  var obs = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  els.forEach(function (el) { obs.observe(el); });
+})();
+
+/* ── Nav scroll effect ── */
+window.addEventListener('scroll', function () {
+  var nav = document.querySelector('.nav');
+  if (window.scrollY > 60) {
+    nav.style.background = 'rgba(7,17,31,0.97)';
+  } else {
+    nav.style.background = 'rgba(7,17,31,0.85)';
+  }
+});
+
+/* ── Mobile nav ── */
+window.toggleMobileNav = function () {
+  document.getElementById('mobileNav').classList.toggle('open');
+};
+
+/* ── FAQ accordion ── */
+window.toggleFaq = function (btn) {
+  var answer = btn.nextElementSibling;
+  var isOpen = btn.classList.contains('open');
+  document.querySelectorAll('.faq-question.open').forEach(function (q) {
+    q.classList.remove('open');
+    q.nextElementSibling.style.maxHeight = null;
+  });
+  if (!isOpen) {
+    btn.classList.add('open');
+    answer.style.maxHeight = answer.scrollHeight + 'px';
+  }
+};
+
+/* ── Contact form demo submit ── */
+window.submitContactForm = function () {
+  var first = document.getElementById('cf-first').value.trim();
+  var msg   = document.getElementById('cf-msg').value.trim();
+  if (!first) { alert('Please enter your name.'); return; }
+  if (!msg)   { alert('Please describe your project or issue.'); return; }
+  document.getElementById('cfFormWrap').style.display = 'none';
+  document.getElementById('cfSuccess').classList.add('active');
+};
+
+/* ── Smooth scroll for nav links ── */
+document.querySelectorAll('a[href^="#"]').forEach(function (a) {
+  a.addEventListener('click', function (e) {
+    var id = a.getAttribute('href');
+    if (id === '#') return;
+    var el = document.querySelector(id);
+    if (el) {
+      e.preventDefault();
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+</script>
+</body>
+</html>
